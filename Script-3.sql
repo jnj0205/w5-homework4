@@ -40,19 +40,24 @@ $$;
 SELECT *
 FROM film_category;
 
-CREATE OR REPLACE FUNCTION get_film_count(category_id integer)
+CREATE OR REPLACE FUNCTION get_film_count(cat_id integer)
 RETURNS integer
 LANGUAGE plpgsql
 AS $$
 		DECLARE film_count integer;
 BEGIN
 		SELECT count(*) INTO film_count
-		FROM film
-		WHERE category_ig = category_id;
+		FROM film_category
+		WHERE film_category.category_id = cat_id
+		GROUP BY film_category.category_id;
 		RETURN film_count;
 END;
 $$;
 
+SELECT get_film_count(15);
+
+
+DROP FUNCTION get_film_count;
 
 
 
